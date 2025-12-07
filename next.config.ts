@@ -7,6 +7,10 @@ const nextConfig = {
     images: {
         unoptimized: true,
     }
+    /*i18n: {
+        locales: ['en', 'it'],
+        defaultLocale: 'it',
+    },*/
 };
 
 export default nextPwa({
