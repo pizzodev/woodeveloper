@@ -7,7 +7,7 @@ export const HeaderComponent: React.FC = () => {
             <div className="mx-auto max-w-7xl px-6 py-6 flex items-center justify-between">
                 {/* Site title */}
                 <h1 className="text-2xl font-bold text-black dark:text-white">
-                    WooDeveloper
+                    woodeveloper
                 </h1>
 
                 <div className="relative w-16 h-16">
