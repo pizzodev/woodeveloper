@@ -1,5 +1,9 @@
 import {ScaffoldComponent} from "@/app/components/ScaffoldComponent";
 import React from "react";
+import {WhoIAmComponent} from "@/app/components/home/WhoIAmComponent";
+import {products} from "@/app/components/products/data/products";
+import ProductComponent from "@/app/components/products/ProductComponent";
+import HomeComponent from "@/app/components/home/HomeComponent";
 
 const HomeBody: React.FC = () => (
     <>
@@ -12,7 +16,7 @@ const HomeBody: React.FC = () => (
                   key={product.id}
                   name={product.name}  // match ProductComponent prop
                   price={product.price}
-                  imageSrc={product.image}
+                  imageUrl={product.image}
               />
           ))}
         </div>

@@ -3,7 +3,7 @@ import {ProductImageComponent} from "@/app/components/products/ProductImageCompo
 
 type ProductComponentProps = {
     name: string;
-    price?: number;
+    price: string;
     imageUrl?: string;
 };
 
