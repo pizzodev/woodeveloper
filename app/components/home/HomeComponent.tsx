@@ -1,16 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { productsDb } from "@/app/libs/firestore";
-import { Product } from "@/app/components/products/data/Product";
-import { collection, getDocs } from "firebase/firestore";
+import React from "react";
 import ProductComponent from "@/app/components/products/ProductComponent";
 import { WhoIAmComponent } from "@/app/components/home/WhoIAmComponent";
+import {products} from "@/app/components/products/data/products";
 
 export default function HomeComponent() {
-    const [products, setProducts] = useState<Product[]>([]);
+    //const [products, setProducts] = useState<Product[]>([]);
 
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const querySnapshot = await getDocs(collection(productsDb, "products"));
@@ -25,7 +23,7 @@ export default function HomeComponent() {
         };
 
         fetchProducts();
-    }, []);
+    }, []);*/
 
     return (
         <>
@@ -41,7 +39,7 @@ export default function HomeComponent() {
                             key={product.id}
                             name={product.name}
                             price={product.price}
-                            imageUrl={product.imageUrl || ""} // pass imageUrl to image prop
+                            imageUrl={product.image || ""} // pass imageUrl to image prop
                         />
                     ))}
                 </div>
