@@ -1,6 +1,6 @@
 import React from "react";
-import { HeaderComponent } from "@/app/components/HeaderComponent";
-import { FooterComponent } from "@/app/components/FooterComponent";
+import { HeaderComponent } from "@/app/home/components/HeaderComponent";
+import { FooterComponent } from "@/app/home/components/FooterComponent";
 
 type ScaffoldComponentProps = {
     body: React.FC;

@@ -1,0 +1,11 @@
+import React from "react";
+import {ScaffoldComponent} from "@/app/ScaffoldComponent";
+import {ProductListComponent} from "@/app/products/components/ProductListComponent";
+
+export default function ProductsPage() {
+    return (
+        <div className="bg-zinc-50 dark:bg-black min-h-screen font-sans">
+            <ScaffoldComponent body={ProductListComponent}/>
+        </div>
+    )
+}

@@ -17,8 +17,6 @@ export const ProductImageComponent: React.FC<ProductImageComponentProps> = ({ im
                 className="object-cover"
                 priority
                 sizes="(max-width: 768px) 100vw, 33vw"
-                placeholder="blur"
-                blurDataURL="/placeholder.png"
             />
         </div>
     );

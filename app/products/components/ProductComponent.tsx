@@ -1,5 +1,5 @@
 import React from "react";
-import {ProductImageComponent} from "@/app/components/products/ProductImageComponent";
+import {ProductImageComponent} from "@/app/products/components/ProductImageComponent";
 
 type ProductComponentProps = {
     name: string;
