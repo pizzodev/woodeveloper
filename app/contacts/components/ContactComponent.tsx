@@ -6,16 +6,20 @@ import { EmailComponent } from "@/app/contacts/components/EmailComponent";
 
 export const ContactsComponent: React.FC = () => {
     return (
-        <section className="relative mx-auto max-w-7xl px-6 py-16 text-center">
-            <h2 className="text-2xl font-bold text-black dark:text-white mb-8">
+        <section className="relative mx-auto max-w-4xl px-6 py-8 flex flex-col items-center text-center space-y-8">
+            <h2 className="text-3xl lg:text-4xl font-black text-white bg-gradient-to-r from-white via-white/90 to-transparent bg-clip-text drop-shadow-lg">
                 I miei contatti
             </h2>
 
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
-                <div className="aspect-square w-60 bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center rounded-lg shadow-md">
+            {/* Lista di box */}
+            <div className="space-y-8 w-full max-w-2xl">
+                {/* Instagram Box */}
+                <div className="w-full">
                     <InstagramComponent />
                 </div>
-                <div className="aspect-square w-60 bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center rounded-lg shadow-md">
+
+                {/* Email Box */}
+                <div className="w-full">
                     <EmailComponent />
                 </div>
             </div>

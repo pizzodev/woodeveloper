@@ -1,12 +1,11 @@
 import {ScaffoldComponent} from "@/app/ScaffoldComponent";
 import React from "react";
-import HomeComponent from "@/app/home/components/HomeComponent";
 import {WhoIAmComponent} from "@/app/about/components/WhoIAmComponent";
 
 export default function Home() {
     return (
         <div className="bg-zinc-50 dark:bg-black min-h-screen font-sans">
-            <ScaffoldComponent body={WhoIAmComponent}/>
+            <ScaffoldComponent backgroundVideo={"/videos/forest.mp4"} body={WhoIAmComponent}/>
         </div>
     );
 }
