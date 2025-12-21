@@ -19,7 +19,7 @@ export const InstagramComponent: React.FC = () => {
             <div className="relative z-10 flex items-center gap-3">
                 <Instagram className="h-5 w-5" />
                 <div>
-                    <h3 className="text-sm font-bold">Scrivimi su Insagram</h3>
+                    <h3 className="text-sm font-bold">Scrivimi su Instagram</h3>
                 </div>
             </div>
 
