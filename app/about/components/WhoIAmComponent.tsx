@@ -7,7 +7,7 @@ export const WhoIAmComponent: React.FC = () => {
                 Chi sono
             </h2>
             <p className="text-white dark:text-white-400 mb-0">
-                Sono uno sviluppatore software che ama creare oggetti oggetti artiginali in legno autentici
+                Sono uno sviluppatore software che ama creare oggetti artiginali in legno autentici
             </p>
         </section>
     )
