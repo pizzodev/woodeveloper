@@ -4,9 +4,11 @@ import React, {useState, useEffect, useTransition} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import {ClickableLogoComponent} from "@/app/home/components/ClickableLogoComponent";
+import {useAppNavigator} from "@/app/AppNavigator";
 
 export const HeaderComponent: React.FC = () => {
-    const [isPending, startTransition] = useTransition();
+    const navigator = useAppNavigator()
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     // Chiudi menu su resize > md
@@ -20,14 +22,6 @@ export const HeaderComponent: React.FC = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const navigate = (href: string) => {
-        startTransition(() => {
-            // Next.js gestisce la navigazione
-            window.location.href = href;
-        });
-        setIsMenuOpen(false);
-    };
-
     return (
         <>
             <header className="bg-black/20 dark:bg-zinc-900/30 backdrop-blur-sm border-b border-white/10 dark:border-zinc-700/50 shadow-xl relative z-50 py-4 px-6">
@@ -35,12 +29,7 @@ export const HeaderComponent: React.FC = () => {
 
                     {/* Logo */}
                     <div className="relative w-16 h-16 flex-shrink-0">
-                        <Image
-                            src="/logo.png"
-                            alt="WooDeveloper Logo"
-                            fill
-                            className="object-contain"
-                        />
+                        <ClickableLogoComponent/>
                     </div>
 
                     {/* Mobile menu button */}
@@ -63,7 +52,7 @@ export const HeaderComponent: React.FC = () => {
                             href={"/about"}
                             onClick={(e) => {
                                 e.preventDefault();
-                                navigate("/about");
+                                navigator.navigate("/about");
                             }}
                         >
                             Chi sono
@@ -73,7 +62,7 @@ export const HeaderComponent: React.FC = () => {
                             href={"/products"}
                             onClick={(e) => {
                                 e.preventDefault();
-                                navigate("/products");
+                                navigator.navigate("/products");
                             }}
                         >
                             Creazioni
@@ -83,7 +72,7 @@ export const HeaderComponent: React.FC = () => {
                             href="/contacts"
                             onClick={(e) => {
                                 e.preventDefault();
-                                navigate("/contacts");
+                                navigator.navigate("/contacts");
                             }}
                         >
                             Contattami
