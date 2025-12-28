@@ -1,6 +1,6 @@
 import React from "react";
 import {ScaffoldComponent} from "@/app/ScaffoldComponent";
-import {ProductListComponent} from "@/app/products/components/ProductListComponent";
+import {ProductListComponent} from "@/app/products/list/components/ProductListComponent";
 
 export default function ProductsPage() {
     return (

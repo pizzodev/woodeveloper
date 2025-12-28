@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ProductComponent from "@/app/products/components/ProductComponent";
+import ProductComponent from "@/app/products/list/components/ProductComponent";
 import { db, storage } from "@/app/libs/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { ref, getDownloadURL } from "firebase/storage";
@@ -93,6 +93,7 @@ export const ProductListComponent: React.FC = () => {
                 {products.map(product => (
                     <ProductComponent
                         key={product.id}
+                        id={product.id}
                         name={product.name}
                         price={product.price}
                         imageUrl={product.imageUrl}

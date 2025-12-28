@@ -62,7 +62,7 @@ export const HeaderComponent: React.FC = () => {
                             href={"/products"}
                             onClick={(e) => {
                                 e.preventDefault();
-                                navigator.navigate("/products");
+                                navigator.navigate("/products/list");
                             }}
                         >
                             Creazioni

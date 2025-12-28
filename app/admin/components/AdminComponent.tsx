@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { db, storage } from "@/app/libs/firebase";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import ProductComponent from "@/app/products/components/ProductComponent";
+import ProductComponent from "@/app/products/list/components/ProductComponent";
 
 interface Product {
     id?: string;
@@ -142,6 +142,7 @@ export const AdminComponent: React.FC = () => {
                 {products.map(product => (
                     <ProductComponent
                         key={product.id}
+                        id={product.id}
                         name={product.name}
                         price={product.price}
                         imageUrl={product.imageUrl}
