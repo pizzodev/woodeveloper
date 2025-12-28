@@ -15,7 +15,8 @@ interface Product {
 }
 
 const CACHE_KEY = "cachedProducts";
-const CACHE_DURATION = 1000 * 60 * 60; // 1 ora in ms
+const CACHE_DURATION = 1000 * 60; // 1 minuto in ms
+const PLACEHOLDER = "/logo-sold-out.png"; // percorso nella cartella public
 
 export const ProductListComponent: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -23,7 +24,7 @@ export const ProductListComponent: React.FC = () => {
 
     useEffect(() => {
         const fetchProducts = async () => {
-            // Controlla se c'è cache valida
+            // Controlla cache
             const cached = localStorage.getItem(CACHE_KEY);
             if (cached) {
                 const { data, timestamp } = JSON.parse(cached);
@@ -34,27 +35,30 @@ export const ProductListComponent: React.FC = () => {
                 }
             }
 
-            // Se non c'è cache valida, recupera da Firestore e Storage
+            // Recupera prodotti da Firestore
             const col = collection(db, "products");
             const snapshot = await getDocs(col);
 
             const prods: Product[] = await Promise.all(
                 snapshot.docs.map(async doc => {
                     const data = doc.data() as Product;
-                    let imageUrl = "";
+                    let imageUrl = PLACEHOLDER;
+
                     if (data.imagePath) {
-                        const storageRef = ref(storage, data.imagePath);
-                        imageUrl = await getDownloadURL(storageRef);
+                        try {
+                            const storageRef = ref(storage, data.imagePath);
+                            imageUrl = await getDownloadURL(storageRef);
+                        } catch (err) {
+                            imageUrl = PLACEHOLDER;
+                        }
                     }
+
                     return { ...data, imageUrl };
                 })
             );
 
             setProducts(prods);
-            localStorage.setItem(
-                CACHE_KEY,
-                JSON.stringify({ data: prods, timestamp: Date.now() })
-            );
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ data: prods, timestamp: Date.now() }));
             setLoading(false);
         };
 

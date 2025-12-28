@@ -8,10 +8,11 @@ type ProductImageComponentProps = {
 };
 
 export const ProductImageComponent: React.FC<ProductImageComponentProps> = ({ imageUrl }) => {
+    const src = imageUrl && imageUrl.length > 0 ? imageUrl : "/logo-sold-out.png";
     return (
         <div className="relative h-48 w-full">
             <Image
-                src={imageUrl}
+                src={src}
                 alt="Logo"
                 fill
                 className="object-cover"
