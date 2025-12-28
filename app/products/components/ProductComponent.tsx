@@ -3,8 +3,8 @@ import {ProductImageComponent} from "@/app/products/components/ProductImageCompo
 
 type ProductComponentProps = {
     name: string;
-    price: string;
-    imageUrl?: string;
+    price: number;
+    imageUrl: string;
 };
 
 const ProductComponent: React.FC<ProductComponentProps> = (
@@ -14,6 +14,7 @@ const ProductComponent: React.FC<ProductComponentProps> = (
         imageUrl,
     }
 ) => {
+    console.log(imageUrl)
     return (
         <div
             className="bg-white dark:bg-zinc-800 shadow rounded-lg overflow-hidden flex flex-col transform transition duration-300 hover:scale-105 hover:shadow-lg cursor-pointer">

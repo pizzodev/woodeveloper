@@ -8,6 +8,7 @@ type ProductImageComponentProps = {
 };
 
 export const ProductImageComponent: React.FC<ProductImageComponentProps> = ({ imageUrl }) => {
+    console.log(imageUrl)
     return (
         <div className="relative h-48 w-full">
             <Image

@@ -1,6 +1,5 @@
 import {ScaffoldComponent} from "@/app/ScaffoldComponent";
 import AdminLogin from "@/app/admin/components/AdminLogin";
-import {WhoIAmComponent} from "@/app/about/components/WhoIAmComponent";
 
 export default function AdminPage() {
     return (

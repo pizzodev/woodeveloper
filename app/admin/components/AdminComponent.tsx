@@ -13,6 +13,8 @@ export const AdminComponent: React.FC = () => {
                     Admin
                 </p>
             </section>
+
+
         )
     }
 }
