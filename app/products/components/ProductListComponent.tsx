@@ -65,7 +65,26 @@ export const ProductListComponent: React.FC = () => {
         fetchProducts();
     }, []);
 
-    if (loading) return <p className="text-white">Loading...</p>;
+    if (loading) {
+        const skeletons = Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="bg-gray-700 animate-pulse rounded-lg overflow-hidden flex flex-col">
+                <div className="h-48 bg-gray-600 w-full" />
+                <div className="p-4 flex flex-col flex-1">
+                    <div className="h-5 bg-gray-500 rounded mb-2 w-3/4"></div>
+                    <div className="h-5 bg-gray-500 rounded w-1/2"></div>
+                </div>
+            </div>
+        ));
+
+        return (
+            <section id="products" className="relative mx-auto max-w-7xl px-6 py-8">
+                <h3 className="text-2xl font-bold text-white mb-4">Le mie creazioni</h3>
+                <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+                    {skeletons}
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section id="products" className="relative mx-auto max-w-7xl px-6 py-8">

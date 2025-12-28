@@ -19,7 +19,7 @@ const CACHE_DURATION = 1000 * 60 * 60; // 1 ora
 
 export const AdminComponent: React.FC = () => {
     const [name, setName] = useState("");
-    const [price, setPrice] = useState<number>(0);
+    const [price, setPrice] = useState<number>();
     const [file, setFile] = useState<File | null>(null);
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(false);
@@ -104,7 +104,6 @@ export const AdminComponent: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gray-900 text-white p-8">
-            <h2 className="text-2xl font-bold mb-6 text-center">Admin Panel</h2>
 
             {/* Form aggiungi prodotto */}
             <div className="bg-gray-800 p-6 rounded-xl shadow-md max-w-md mx-auto mb-8">
