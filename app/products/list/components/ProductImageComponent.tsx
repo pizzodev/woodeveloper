@@ -1,24 +1,57 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 type ProductImageComponentProps = {
-    imageUrl: string;
+    imageUrls: string[];
 };
 
-export const ProductImageComponent: React.FC<ProductImageComponentProps> = ({ imageUrl }) => {
-    const src = imageUrl && imageUrl.length > 0 ? imageUrl : "/logo-sold-out.png";
+export const ProductImageComponent: React.FC<ProductImageComponentProps> = ({ imageUrls }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const nextImage = () => setCurrentIndex((prev) => (prev + 1) % imageUrls.length);
+    const prevImage = () => setCurrentIndex((prev) => (prev - 1 + imageUrls.length) % imageUrls.length);
+
     return (
-        <div className="relative h-48 w-full">
+        <div className="relative h-48 w-full overflow-hidden rounded-lg">
             <Image
-                src={src}
-                alt="Logo"
+                src={imageUrls[currentIndex]}
+                alt={`Product Image ${currentIndex + 1}`}
                 fill
                 className="object-cover"
                 priority
-                sizes="(max-width: 768px) 100vw, 33vw"
             />
+
+            {/* Frecce di navigazione */}
+            {imageUrls.length > 1 && (
+                <>
+                    <button
+                        onClick={prevImage}
+                        className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 p-1 rounded-full text-white z-10"
+                    >
+                        ‹
+                    </button>
+                    <button
+                        onClick={nextImage}
+                        className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 p-1 rounded-full text-white z-10"
+                    >
+                        ›
+                    </button>
+
+                    {/* Indicatori dei puntini */}
+                    <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+                        {imageUrls.map((_, idx) => (
+                            <span
+                                key={idx}
+                                className={`w-2 h-2 rounded-full border border-white ${
+                                    idx === currentIndex ? "bg-white" : "bg-gray-400"
+                                }`}
+                            />
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     );
 };

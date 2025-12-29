@@ -1,17 +1,16 @@
 import React from "react";
 import {HeaderComponent} from "@/app/home/components/HeaderComponent";
-import {FooterComponent} from "@/app/home/components/FooterComponent";
 import {PageTransition} from "@/app/PageTransition";
 
 type ScaffoldComponentProps = {
     backgroundVideo: string
-    body: React.FC;
+    children: React.ReactNode;
 };
 
 export const ScaffoldComponent: React.FC<ScaffoldComponentProps> = (
     {
         backgroundVideo,
-        body: Body
+        children,
     }
 ) => {
     return (
@@ -38,7 +37,7 @@ export const ScaffoldComponent: React.FC<ScaffoldComponentProps> = (
                     {/* Main content */}
                     <main className="flex-1 lg:pt-28">
                         <div className="relative bg-transparent">
-                            <Body/>
+                            {children}
                         </div>
                     </main>
 

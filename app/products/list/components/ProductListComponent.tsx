@@ -1,24 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import ProductComponent from "@/app/products/list/components/ProductComponent";
-import { db, storage } from "@/app/libs/firebase";
-import { collection, getDocs } from "firebase/firestore";
-import { ref, getDownloadURL } from "firebase/storage";
-
-interface Product {
-    id: string;
-    name: string;
-    price: number;
-    imagePath: string;
-    imageUrl: string;
-}
+import {db} from "@/app/libs/firebase";
+import {collection, getDocs} from "firebase/firestore";
+import {mapDocToProduct, Product} from "@/app/data/products/Product";
+import {useAppNavigator} from "@/app/AppNavigator";
 
 const CACHE_KEY = "cachedProducts";
 const CACHE_DURATION = 1000 * 60; // 1 minuto in ms
-const PLACEHOLDER = "/logo-sold-out.png"; // percorso nella cartella public
 
 export const ProductListComponent: React.FC = () => {
+    const appNavigator = useAppNavigator()
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -41,19 +34,9 @@ export const ProductListComponent: React.FC = () => {
 
             const prods: Product[] = await Promise.all(
                 snapshot.docs.map(async doc => {
-                    const data = doc.data() as Product;
-                    let imageUrl = PLACEHOLDER;
-
-                    if (data.imagePath) {
-                        try {
-                            const storageRef = ref(storage, data.imagePath);
-                            imageUrl = await getDownloadURL(storageRef);
-                        } catch (err) {
-                            imageUrl = PLACEHOLDER;
-                        }
-                    }
-
-                    return { ...data, imageUrl };
+                    const product = await mapDocToProduct(doc);
+                    console.log(product.imageUrls)
+                    return product
                 })
             );
 
@@ -91,13 +74,20 @@ export const ProductListComponent: React.FC = () => {
             <h3 className="text-2xl font-bold text-white mb-4">Le mie creazioni</h3>
             <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
                 {products.map(product => (
-                    <ProductComponent
-                        key={product.id}
-                        id={product.id}
-                        name={product.name}
-                        price={product.price}
-                        imageUrl={product.imageUrl}
-                    />
+                    <div key={product.docId}
+                         onClick={(e) => {
+                             e.preventDefault()
+                             appNavigator.navigate(`/products/detail/${product.docId}`)
+                         }}
+                    >
+                        <ProductComponent
+                            key={product.docId}
+                            docId={product.docId}
+                            name={product.name}
+                            price={product.price}
+                            imageUrls={product.imageUrls.slice(0, 1)}
+                        />
+                    </div>
                 ))}
             </div>
         </section>

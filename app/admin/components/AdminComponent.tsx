@@ -5,22 +5,16 @@ import { db, storage } from "@/app/libs/firebase";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import ProductComponent from "@/app/products/list/components/ProductComponent";
-
-interface Product {
-    id?: string;
-    name: string;
-    price: number;
-    imageUrl: string;
-    imagePath: string;
-}
+import { mapDocToProduct, Product } from "@/app/data/products/Product";
 
 const CACHE_KEY = "cachedProducts";
 const CACHE_DURATION = 1000 * 60 * 60; // 1 ora
+const PLACEHOLDER = "/logo-sold-out.png";
 
 export const AdminComponent: React.FC = () => {
     const [name, setName] = useState("");
     const [price, setPrice] = useState<number>();
-    const [file, setFile] = useState<File | null>(null);
+    const [files, setFiles] = useState<FileList | null>(null);
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -28,7 +22,6 @@ export const AdminComponent: React.FC = () => {
     // Carica prodotti con cache
     useEffect(() => {
         const fetchProducts = async () => {
-            // Controlla cache
             const cached = localStorage.getItem(CACHE_KEY);
             if (cached) {
                 const { data, timestamp } = JSON.parse(cached);
@@ -38,22 +31,14 @@ export const AdminComponent: React.FC = () => {
                 }
             }
 
-            // Recupera da Firestore + Storage
             const snapshot = await getDocs(collection(db, "products"));
             const prods: Product[] = await Promise.all(
                 snapshot.docs.map(async doc => {
-                    const data = doc.data() as Product;
-                    let imageUrl = data.imageUrl;
-                    if (!imageUrl && data.imagePath) {
-                        const storageRef = ref(storage, data.imagePath);
-                        imageUrl = await getDownloadURL(storageRef);
-                    }
-                    return { id: doc.id, ...data, imageUrl };
+                    return await mapDocToProduct(doc);
                 })
             );
 
             setProducts(prods);
-            // Salva cache
             localStorage.setItem(CACHE_KEY, JSON.stringify({ data: prods, timestamp: Date.now() }));
         };
 
@@ -61,8 +46,8 @@ export const AdminComponent: React.FC = () => {
     }, []);
 
     const handleUpload = async () => {
-        if (!file || !name || !price) {
-            setError("Compila tutti i campi");
+        if (!files || !name || !price) {
+            setError("Compila tutti i campi e scegli almeno un file");
             return;
         }
 
@@ -70,36 +55,46 @@ export const AdminComponent: React.FC = () => {
         setError("");
 
         try {
-            // Carica immagine su Storage
-            const storageRef = ref(storage, `products/${file.name}`);
-            await uploadBytes(storageRef, file);
-            const imageUrl = await getDownloadURL(storageRef);
+            const imagePaths: string[] = [];
+            const imageUrls: string[] = [];
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const storageRef = ref(storage, `products/${file.name}`);
+                await uploadBytes(storageRef, file);
+                const url = await getDownloadURL(storageRef);
+                imagePaths.push(`products/${file.name}`);
+                imageUrls.push(url);
+            }
 
             // Salva prodotto in Firestore
             const docRef = await addDoc(collection(db, "products"), {
                 name,
                 price,
-                imagePath: `products/${file.name}`,
-                imageUrl,
+                imagePaths,
             });
 
-            const newProduct = { id: docRef.id, name, price, imageUrl, imagePath: `products/${file.name}` };
+            const newProduct: Product = {
+                docId: docRef.id,
+                name,
+                price,
+                imagePaths,
+                imageUrls,
+            };
 
-            // Aggiorna stato e cache
             const updatedProducts = [...products, newProduct];
             setProducts(updatedProducts);
             localStorage.setItem(CACHE_KEY, JSON.stringify({ data: updatedProducts, timestamp: Date.now() }));
 
-            // Reset form
             setName("");
             setPrice(0);
-            setFile(null);
+            setFiles(null);
         } catch (err) {
             console.error(err);
             setError("Errore durante il caricamento");
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);
     };
 
     return (
@@ -124,7 +119,8 @@ export const AdminComponent: React.FC = () => {
                 />
                 <input
                     type="file"
-                    onChange={e => setFile(e.target.files?.[0] || null)}
+                    multiple
+                    onChange={e => setFiles(e.target.files)}
                     className="w-full mb-3 text-white"
                 />
                 {error && <p className="text-red-500 mb-3">{error}</p>}
@@ -141,11 +137,11 @@ export const AdminComponent: React.FC = () => {
             <div className="max-w-7xl mx-auto grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
                 {products.map(product => (
                     <ProductComponent
-                        key={product.id}
-                        id={product.id}
+                        key={product.docId}
+                        docId={product.docId}
                         name={product.name}
                         price={product.price}
-                        imageUrl={product.imageUrl}
+                        imageUrls={product.imageUrls}
                     />
                 ))}
             </div>
