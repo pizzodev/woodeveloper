@@ -6,14 +6,15 @@ import { collection, addDoc, getDocs } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import ProductComponent from "@/app/products/list/components/ProductComponent";
 import { mapDocToProduct, Product } from "@/app/data/products/Product";
+import {useAppNavigator} from "@/app/AppNavigator";
 
-const CACHE_KEY = "cachedProducts";
-const CACHE_DURATION = 1000 * 60 * 60; // 1 ora
-const PLACEHOLDER = "/logo-sold-out.png";
 
-export const AdminComponent: React.FC = () => {
+export const AdminAddProductComponent: React.FC = () => {
+
+    const navigator = useAppNavigator()
     const [name, setName] = useState("");
     const [price, setPrice] = useState<number>();
+    const [description, setDescription] = useState("");
     const [files, setFiles] = useState<FileList | null>(null);
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(false);
@@ -22,15 +23,6 @@ export const AdminComponent: React.FC = () => {
     // Carica prodotti con cache
     useEffect(() => {
         const fetchProducts = async () => {
-            const cached = localStorage.getItem(CACHE_KEY);
-            if (cached) {
-                const { data, timestamp } = JSON.parse(cached);
-                if (Date.now() - timestamp < CACHE_DURATION) {
-                    setProducts(data);
-                    return;
-                }
-            }
-
             const snapshot = await getDocs(collection(db, "products"));
             const prods: Product[] = await Promise.all(
                 snapshot.docs.map(async doc => {
@@ -39,7 +31,6 @@ export const AdminComponent: React.FC = () => {
             );
 
             setProducts(prods);
-            localStorage.setItem(CACHE_KEY, JSON.stringify({ data: prods, timestamp: Date.now() }));
         };
 
         fetchProducts();
@@ -78,17 +69,20 @@ export const AdminComponent: React.FC = () => {
                 docId: docRef.id,
                 name,
                 price,
+                description,
                 imagePaths,
                 imageUrls,
             };
 
             const updatedProducts = [...products, newProduct];
             setProducts(updatedProducts);
-            localStorage.setItem(CACHE_KEY, JSON.stringify({ data: updatedProducts, timestamp: Date.now() }));
 
             setName("");
             setPrice(0);
+            setDescription("")
             setFiles(null);
+
+            alert("Prodotto aggiunto con successo!");
         } catch (err) {
             console.error(err);
             setError("Errore durante il caricamento");
@@ -117,6 +111,13 @@ export const AdminComponent: React.FC = () => {
                     onChange={e => setPrice(Number(e.target.value))}
                     className="w-full mb-3 p-3 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none"
                 />
+                <textarea
+                    placeholder="Descrizione"
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
+                    className="w-full mb-3 p-3 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none resize-none"
+                    rows={2} // Altezza iniziale, puoi cambiare
+                />
                 <input
                     type="file"
                     multiple
@@ -136,13 +137,22 @@ export const AdminComponent: React.FC = () => {
             {/* Lista prodotti */}
             <div className="max-w-7xl mx-auto grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
                 {products.map(product => (
-                    <ProductComponent
+                    <div
                         key={product.docId}
-                        docId={product.docId}
-                        name={product.name}
-                        price={product.price}
-                        imageUrls={product.imageUrls}
-                    />
+                        onClick={(e) => {
+                            e.preventDefault()
+                            navigator.navigate(`/admin/edit/${product.docId}`)
+                        }}
+                    >
+                        <ProductComponent
+                            key={product.docId}
+                            docId={product.docId}
+                            name={product.name}
+                            price={product.price}
+                            description={product.description}
+                            imageUrls={product.imageUrls}
+                        />
+                    </div>
                 ))}
             </div>
         </div>

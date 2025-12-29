@@ -14,5 +14,11 @@ export function useAppNavigator() {
         });
     }, [router, startTransition]);
 
-    return { navigate, isPending };
+    const popBack = useCallback(() => {
+        startTransition(() => {
+            router.back();
+        })
+    }, [router, startTransition])
+
+    return { navigate, popBack, isPending };
 }

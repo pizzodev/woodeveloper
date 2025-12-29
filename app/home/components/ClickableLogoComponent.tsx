@@ -12,7 +12,7 @@ export function ClickableLogoComponent() {
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleSuccess = useCallback(() => {
-        navigator.navigate("/admin");
+        navigator.navigate("/admin/login");
     }, [navigator]);
 
     const handleClick = () => {

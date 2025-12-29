@@ -34,9 +34,7 @@ export const ProductListComponent: React.FC = () => {
 
             const prods: Product[] = await Promise.all(
                 snapshot.docs.map(async doc => {
-                    const product = await mapDocToProduct(doc);
-                    console.log(product.imageUrls)
-                    return product
+                    return await mapDocToProduct(doc);
                 })
             );
 
@@ -85,6 +83,7 @@ export const ProductListComponent: React.FC = () => {
                             docId={product.docId}
                             name={product.name}
                             price={product.price}
+                            description={product.description}
                             imageUrls={product.imageUrls.slice(0, 1)}
                         />
                     </div>

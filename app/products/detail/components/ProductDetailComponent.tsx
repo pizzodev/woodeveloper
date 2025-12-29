@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Product } from "@/app/data/products/Product";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import {ProductInfoComponent} from "@/app/products/list/components/ProductInfoComponent";
 
 type ProductDetailComponentProps = {
     product: Product;
@@ -65,11 +66,8 @@ export const ProductDetailComponent: React.FC<ProductDetailComponentProps> = (
                 )}
             </div>
 
-            {/* Product info */}
-            <div className="max-w-4xl w-full text-center">
-                <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
-                <p className="text-xl font-semibold mb-4">€ {product.price}</p>
-            </div>
+            <ProductInfoComponent name={product.name} description={product.description} price={product.price} />
+
         </div>
     );
 };

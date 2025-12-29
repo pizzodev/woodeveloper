@@ -5,7 +5,7 @@
 import {useState} from "react";
 import {signInWithEmailAndPassword} from "firebase/auth";
 import {authProvider} from "@/app/libs/firebase";
-import {AdminComponent} from "@/app/admin/components/AdminComponent";
+import {AdminAddProductComponent} from "@/app/admin/add/components/AdminAddProductComponent";
 
 export default function AdminLogin() {
     const [isAuthenticated, setAuthenticated] = useState(false);
@@ -24,7 +24,7 @@ export default function AdminLogin() {
     };
 
     if (isAuthenticated) {
-        return <AdminComponent/>
+        return <AdminAddProductComponent/>
     } else {
         return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black">
             <div className="w-full max-w-md bg-gray-900 rounded-2xl shadow-xl p-8 space-y-6">

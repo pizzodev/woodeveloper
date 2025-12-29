@@ -6,6 +6,7 @@ export interface Product {
     docId: string;
     name: string;
     price: number;
+    description: string;
     imagePaths: string[];
     imageUrls: string[];
 }
@@ -17,6 +18,7 @@ export async function mapDocToProduct(doc: DocumentSnapshot): Promise<Product> {
         docId: doc.id,
         name: data.name,
         price: data.price,
+        description: data.description,
         imageUrls: data.imageUrls,
         imagePaths: data.imagePaths,
     };
