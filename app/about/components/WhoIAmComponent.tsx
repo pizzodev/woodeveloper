@@ -6,8 +6,8 @@ export const WhoIAmComponent: React.FC = () => {
     const navigator = useAppNavigator();
 
     return (
-        <section className="flex flex-col flex-1 justify-between mx-auto max-w-7xl px-6 py-8 text-center">
-            <div>
+        <section className="flex flex-col flex-1 justify-between mx-auto max-w-7xl px-6 py-8 pb-[calc(2rem+env(safe-area-inset-bottom))] text-center">
+        <div>
                 <h2 className="text-2xl font-bold text-white dark:text-white mb-4">Chi sono</h2>
                 <p className="text-white dark:text-white-400 mb-2">
                     Sono uno sviluppatore software con la passione per la creazione di oggetti artigianali in legno, dove tecnologia e artigianato si incontrano.
