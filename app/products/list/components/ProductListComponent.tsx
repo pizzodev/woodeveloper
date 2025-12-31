@@ -8,10 +8,10 @@ import {mapDocToProduct, Product} from "@/app/data/products/Product";
 import {useAppNavigator} from "@/app/AppNavigator";
 
 const CACHE_KEY = "cachedProducts";
-const CACHE_DURATION = 1000 * 60; // 1 minuto in ms
+const CACHE_DURATION = 1000 * 60; // 1 minuto
 
 export const ProductListComponent: React.FC = () => {
-    const appNavigator = useAppNavigator()
+    const appNavigator = useAppNavigator();
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -20,7 +20,7 @@ export const ProductListComponent: React.FC = () => {
             // Controlla cache
             const cached = localStorage.getItem(CACHE_KEY);
             if (cached) {
-                const { data, timestamp } = JSON.parse(cached);
+                const {data, timestamp} = JSON.parse(cached);
                 if (Date.now() - timestamp < CACHE_DURATION) {
                     setProducts(data);
                     setLoading(false);
@@ -33,53 +33,60 @@ export const ProductListComponent: React.FC = () => {
             const snapshot = await getDocs(col);
 
             const prods: Product[] = await Promise.all(
-                snapshot.docs.map(async doc => {
+                snapshot.docs.map(async (doc) => {
                     return await mapDocToProduct(doc);
                 })
             );
 
             setProducts(prods);
-            localStorage.setItem(CACHE_KEY, JSON.stringify({ data: prods, timestamp: Date.now() }));
+            localStorage.setItem(
+                CACHE_KEY,
+                JSON.stringify({data: prods, timestamp: Date.now()})
+            );
             setLoading(false);
         };
 
         fetchProducts();
     }, []);
 
+    // Skeleton loading state
     if (loading) {
-        const skeletons = Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="bg-gray-700 animate-pulse rounded-lg overflow-hidden flex flex-col">
-                <div className="h-48 bg-gray-600 w-full" />
-                <div className="p-4 flex flex-col flex-1">
-                    <div className="h-5 bg-gray-500 rounded mb-2 w-3/4"></div>
-                    <div className="h-5 bg-gray-500 rounded w-1/2"></div>
-                </div>
-            </div>
-        ));
-
         return (
-            <section id="products" className="relative mx-auto max-w-7xl px-6 py-8">
+            <section className="relative w-full px-6 py-8">
                 <h3 className="text-2xl font-bold text-white mb-4">Le mie creazioni</h3>
-                <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
-                    {skeletons}
+                <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 items-stretch w-full">
+                    {Array.from({length: 8}).map((_, i) => (
+                        <div
+                            key={i}
+                            className="bg-gray-700 animate-pulse rounded-lg overflow-hidden flex flex-col w-full h-full"
+                        >
+                            <div className="h-48 bg-gray-600 w-full"/>
+                            <div className="p-4 flex flex-col flex-1">
+                                <div className="h-5 bg-gray-500 rounded mb-2 w-3/4"></div>
+                                <div className="h-5 bg-gray-500 rounded w-1/2"></div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </section>
+
         );
     }
 
+    // Render products
     return (
         <section id="products" className="relative mx-auto max-w-7xl px-6 py-8">
             <h3 className="text-2xl font-bold text-white mb-4">Le mie creazioni</h3>
-            <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
-                {products.map(product => (
-                    <div key={product.docId}
-                         onClick={(e) => {
-                             e.preventDefault()
-                             appNavigator.navigate(`/products/detail/${product.docId}`)
-                         }}
+            <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 items-stretch">
+                {products.map((product) => (
+                    <div
+                        key={product.docId}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            appNavigator.navigate(`/products/detail/${product.docId}`);
+                        }}
                     >
                         <ProductComponent
-                            key={product.docId}
                             docId={product.docId}
                             name={product.name}
                             price={product.price}

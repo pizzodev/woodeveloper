@@ -5,7 +5,7 @@ import {ProductListComponent} from "@/app/products/list/components/ProductListCo
 export default function ProductsPage() {
     return (
         <div className="bg-zinc-50 dark:bg-black min-h-screen font-sans">
-            <ScaffoldComponent backgroundVideo={"../videos/carpenter.mp4"}>
+            <ScaffoldComponent backgroundVideo={"/videos/carpenter.mp4"}>
                 <ProductListComponent/>
             </ScaffoldComponent>
         </div>
