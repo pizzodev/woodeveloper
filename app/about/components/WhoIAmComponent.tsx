@@ -23,7 +23,7 @@ export const WhoIAmComponent: React.FC = () => {
 
                 <p className="text-white dark:text-white-400 mb-2">
                     Sono uno sviluppatore software con la passione per la creazione di oggetti
-                    artigianali in legno, dove tecnologia e artigianato si incontrano.
+                    artigianali in legno.
                 </p>
 
                 <p className="text-white dark:text-white-400 mb-2">
