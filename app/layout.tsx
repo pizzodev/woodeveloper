@@ -17,20 +17,18 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-                                     children,
-                                   }: Readonly<{
+  children,
+}: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-      <html lang="it"> {/* ← it per contenuti italiani */}
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-      </head>
+    <html lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-      {children}
+        {children}
       </body>
-      </html>
+    </html>
   );
 }

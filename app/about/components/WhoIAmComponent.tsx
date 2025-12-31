@@ -10,14 +10,13 @@ export const WhoIAmComponent: React.FC = () => {
         <section
             className="
                 flex flex-col flex-1
-                justify-between
                 mx-auto max-w-7xl
                 px-6 pt-8
-                pb-[max(2rem,env(safe-area-inset-bottom))]
+                p-8
                 text-center
             "
         >
-            <div>
+            <div className="pb-8">
                 <h2 className="text-2xl font-bold text-white dark:text-white mb-4">
                     Chi sono
                 </h2>
