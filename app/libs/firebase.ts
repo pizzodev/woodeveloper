@@ -5,7 +5,7 @@ import {getStorage} from "@firebase/storage";
 import {getFirestore} from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCC26TBo2-LIEbeaps4sZ5rQ7TD4LalMjk",
+    apiKey: process.env.FIREBASE_API_KEY,
     authDomain: "woodeveloper-721fd.firebaseapp.com",
     projectId: "woodeveloper-721fd",
     storageBucket: "woodeveloper-721fd.firebasestorage.app",
