@@ -10,7 +10,7 @@ const firebaseConfig = {
     projectId: "woodeveloper-721fd",
     storageBucket: "woodeveloper-721fd.firebasestorage.app",
     messagingSenderId: "698643633638",
-    appId: "1:698643633638:web:3eacf3803463ba5bc7f227"
+    appId: "1:698643633638:web:b93103c337d7c588c7f227"
 };
 
 export const firebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp();
